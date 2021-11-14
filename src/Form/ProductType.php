@@ -13,10 +13,10 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',null,[ 'attr' => ['class' => 'form-control']])
-            ->add('description',null,['attr'=> ['class' => 'form-control']])
-            ->add('price',null,['attr'=> ['class' => 'form-control']])
-            ->add('quantity',null,['attr'=> ['class' => 'form-control']])
+            ->add('name',null,[ 'attr' => ['class' => 'form-control','name' => 'prod_name' ]])
+            ->add('description',null,['attr'=> ['class' => 'form-control','name' => 'prod_desc']])
+            ->add('price',null,['attr'=> ['class' => 'form-control','name' => 'prod_price']])
+            ->add('quantity',null,['attr'=> ['class' => 'form-control','name' => 'prod_qty']])
             ->add('add',SubmitType::class,['attr'=> ['class' => 'btn btn-dark ']])
         ;
     }

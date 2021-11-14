@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ProductType;
+
+
 /**
  * @Route("/product", name="product")
  */
@@ -37,16 +39,24 @@ class ProductController extends AbstractController
         ]);
     }
     /**
-     * @Route("/add", name=".add")
-     * 
+     * @Route("/add", name=".add" , methods={"POST","HEAD"})
      */
     public function add(Request $request)
     {
+
         $product = new Product();
-        $em = $this->getrDoctrine->getManager();
-        
-        return $this->render('product/create.html.twig', [
-            'controller_name' => 'ProductController',
-        ]);
+        $product->setName($request->get('prod_name'));
+        $product->setDescription($request->get('prod_desc'));
+        $product->setPrice($request->get('prod_price'));
+        $product->setQuantity($request->get('prod_qty'));
+
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+        $this->addFlash('success', 'succesfully added ' . $product->getName());
+
+
+        return $this->redirect('product.index');
     }
 }
