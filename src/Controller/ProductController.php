@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ProductType;
-
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @Route("/product", name="product")
@@ -41,22 +42,20 @@ class ProductController extends AbstractController
     /**
      * @Route("/add", name=".add" , methods={"POST","HEAD"})
      */
-    public function add(Request $request)
+    public function add(Request $request, EntityManagerInterface $emi)
     {
-
         $product = new Product();
-        $product->setName($request->get('prod_name'));
-        $product->setDescription($request->get('prod_desc'));
-        $product->setPrice($request->get('prod_price'));
-        $product->setQuantity($request->get('prod_qty'));
 
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($product);
-        $em->flush();
-        $this->addFlash('success', 'succesfully added ' . $product->getName());
-
-
-        return $this->redirect('product.index');
+        $form  = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+          
+            $emi->persist($product);
+            $emi->flush();
+            $this->addFlash('success', 'succesfully added ' . $product->getName());
+            return $this->redirectToRoute('product.index');
+        } else {
+            return $this->redirectToRoute('product.index');
+        }
     }
 }
