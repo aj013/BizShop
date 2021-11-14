@@ -10,9 +10,9 @@
         <div class="row">
             <div class="col"></div>
             <div class="col-10">
-
+                
                 {% include 'flash.html.twig' %}
-                {% block method_body %}{% endblock %}
+                {% block method_body %}<a class="btn btn-dark" href={{ path('product.create') }}>add item</a>{% endblock %}
             </div>
             <div class="col"></div>
         </div>
